@@ -6,8 +6,12 @@ var inicio: any
 var fin: any
 test.beforeEach(async ({ page }) => {
     page2 = await login(page)
+    inicio = Date.now()
     var link = page2.getByRole('link', { name: 'Productos/Servicios' })
     await link.waitFor({ state: 'visible' })
+    await expect(link).toBeVisible()
+    fin = Date.now()
+    console.log("Inicio de sesión: " + (fin - inicio) + "ms")
     await link.click()
     var titulo = page2.locator('role=heading[name="Productos y Servicios"]')
     await titulo.waitFor({ state: 'visible' })
@@ -18,7 +22,6 @@ test("Add", async ({ page }) => {
     await Datos({ page2 })
     await page2.getByRole('button', { name: 'Registrar' }).click()
     await page2.getByRole('button', { name: 'Continuar' }).click()
-    // await page2.pause()
 })
 
 test("Update", async ({ page }) => {
@@ -45,7 +48,6 @@ test("Update", async ({ page }) => {
 })
 
 test("DeleteOut", async ({ page }) => {
-    await page2.pause()
     var btn_edit: number[] = []
     var edit = page2.getByLabel('Settings')
     var count = await edit.count()
