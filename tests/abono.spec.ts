@@ -9,7 +9,11 @@ var fin: any
 test.beforeEach(async ({ page }) => {
     page2 = await login(page)
     var link = page2.getByRole('link', { name: 'Abono' })
+    inicio = Date.now()
     await link.waitFor({ state: 'visible' })
+    await expect(link).toBeVisible()
+    fin = Date.now()
+    console.log("Tiempo de inicio de sesión: " + (fin - inicio) + "ms")
     await link.click()
     var titulo = page2.locator('role=heading[name="Abonos"]')
     await titulo.waitFor({ state: 'visible' })

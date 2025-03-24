@@ -9,7 +9,11 @@ var fin: any
 test.beforeEach(async ({ page }) => {
     page2 = await login(page)
     var link = page2.getByRole('link', { name: 'Venta' })
+    inicio = Date.now()
     await link.waitFor({ state: 'visible' })
+    await expect(link).toBeVisible()
+    fin = Date.now()
+    console.log("Tiempo de inicio de sesión: " + (fin - inicio) + "ms")
     await link.click()
     var titulo = page2.locator('role=heading[name="Notas de Venta"]')
     await titulo.waitFor({ state: 'visible' })
@@ -36,7 +40,6 @@ test("Create", async ({ page }) => {
     await Add({ page2, button })
 })
 
-
 // ----------------------------------------------------------------------------
 
 async function Random(boton) {
@@ -52,7 +55,9 @@ async function Add({ page2, button }){
 
     for(var i = 0; i < 3; i++){
         await page2.getByRole('button', { name: 'Agregar' }).click()
-        await page2.getByRole('textbox').nth(2).click()
+        var random = Math.floor(1 + Math.random() * 5).toString()
+        await page2.getByRole('textbox').nth(i+1).fill(random)
+        await page2.locator('[aria-haspopup="listbox"]').nth(i+1).click()
         opciones = page2.locator('[role="option"]:visible')
         await Random(opciones)
     }

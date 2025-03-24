@@ -4,12 +4,16 @@ import { fakerES_MX } from '@faker-js/faker'
 
 let page2: any
 var inicio: any
-var final: any
+var fin: any
 
 test.beforeEach(async ({ page }) => {
     page2 = await login(page)
     var link = page2.getByRole('link', { name: 'Sucursales' })
+    inicio = Date.now()
     await link.waitFor({ state: 'visible' })
+    await expect(link).toBeVisible()
+    fin = Date.now()
+    console.log("Tiempo de inicio de sesión: " + (fin - inicio) + "ms")
     await link.click()
     var titulo = page2.locator('role=heading[name="Sucursales"]')
     await titulo.waitFor({ state: 'visible' })
@@ -24,8 +28,8 @@ test("Add", async ({ page }) => {
         await page2.getByRole('button', { name: 'Continuar' }).click()
         inicio = Date.now()
         await page2.locator('[aria-modal="true"][role="dialog"]:visible').nth(1).waitFor({ state: 'hidden'})
-        final = Date.now()
-        console.log("Agregar sucursal: " + (final - inicio) + "ms")
+        fin = Date.now()
+        console.log("Agregar sucursal: " + (fin - inicio) + "ms")
     }
     
 })
@@ -49,8 +53,8 @@ test("Edit", async ({ page }) => {
     await page2.getByRole('button', { name: 'Continuar' }).click()
     inicio = Date.now()
     await page2.locator('[aria-modal="true"][role="dialog"]:visible').nth(1).waitFor({ state: 'hidden'})
-    final = Date.now()
-    console.log("Editar sucursal: " + (final - inicio) + "ms")
+    fin = Date.now()
+    console.log("Editar sucursal: " + (fin - inicio) + "ms")
 })
 
 test("DeleteOut", async ({ page }) => {
