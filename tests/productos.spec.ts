@@ -18,10 +18,12 @@ test.beforeEach(async ({ page }) => {
     await expect(titulo).toBeVisible()
 })
 test("Add", async ({ page }) => {
-    await page2.getByRole('button', { name: 'Agregar' }).click()
-    await Datos({ page2 })
-    await page2.getByRole('button', { name: 'Registrar' }).click()
-    await page2.getByRole('button', { name: 'Continuar' }).click()
+    for(var i = 0; i < 3; i++){
+        await page2.getByRole('button', { name: 'Agregar' }).click()
+        await Datos({ page2 })
+        await page2.getByRole('button', { name: 'Registrar' }).click()
+        await page2.getByRole('button', { name: 'Continuar' }).click()
+    }
 })
 
 test("Update", async ({ page }) => {
@@ -77,6 +79,7 @@ async function Datos({ page2 }){
     await page2.getByRole('textbox', { name: 'Tipo' }).click()
     var opciones = page2.locator('[role="option"]:visible')
     await Random(opciones)
+    await page2.getByRole('textbox', { name: 'SkU' }).fill(faker.hacker.ingverb()+faker.number.int({ min: 1, max: 1000 }))
     await page2.getByRole('textbox', { name: 'Precio' }).fill(faker.number.int({ min: 1, max: 9999 }).toString())
     await page2.getByRole('textbox', { name: 'Imagen' }).fill(fakerES_MX.internet.url())
     await page2.getByRole('textbox', { name: 'Descripción' }).fill(fakerES_MX.lorem.paragraph())
